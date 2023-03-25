@@ -25,3 +25,7 @@ def index():
         # translate_tikz :: (Boxes, Labels) -> Text
 
         return {"code": "blah"}
+
+
+# HOW TO RUN
+# run this app using: python3 -m flask --app hello run
