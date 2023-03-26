@@ -45,7 +45,7 @@ def closest_vertex(p, vertex_list):
 def get_latex(model_output):
     labels = model_output["labels"]
     boxes = model_output["boxes"]
-    out_lines = []
+    out_lines = [r'\begin{tikzpicture}[thick,main/.style = {draw, circle}]']
     max_x = max([boxes[i][2] if int(labels[i]) == 36 else 0 for i in range(len(boxes))])
     max_y = max([boxes[i][3] if int(labels[i]) == 36 else 0 for i in range(len(boxes))])
     for i in range(len(boxes)):
@@ -79,6 +79,7 @@ def get_latex(model_output):
             out_lines.append(DIRECTED_LINE % (closest_vertex(BR, vertex_list), closest_vertex(TL, vertex_list)))
         elif labels[i] == DIRECTED_TL_BR:
             out_lines.append(DIRECTED_LINE % (closest_vertex(TL, vertex_list), closest_vertex(BR, vertex_list)))
+    out_lines.append(r'\end{tikzpicture}')
     return "\n".join(out_lines)
 
 
