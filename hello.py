@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 from flask_cors import CORS, cross_origin
+from model_to_tex import get_latex
 
 # from PIL import Image
 
@@ -22,7 +23,9 @@ def index():
 
         # grab the image file from the url, convert to some python object i.e. PIL Image..   # img = Image().open("filename.png")
         # run_inference :: Image -> (Boxes, Labels)
-        # translate_tikz :: (Boxes, Labels) -> Text
+
+        # Feed output from neural network into get_latex
+        get_latex(model_output)
 
         return {"code": "blah"}
 
