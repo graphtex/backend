@@ -35,7 +35,7 @@ for i in range(97, 123):
     code_to_letter[i - 87] = chr(i)
 
 def dist(p1, p2):
-    return math.sqrt(p1[0]**2 + p2[0]**2)
+    return math.sqrt(float(p1[0] - p2[0])**2 + float(p2[1] - p2[0])**2)
 
 def closest_vertex(p, vertex_list):
     closest = min(range(len(vertex_list)), key=lambda i: dist(vertex_list[i], p)) + 1
