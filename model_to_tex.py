@@ -1,5 +1,7 @@
 from PIL import Image
 import math
+import random
+
 
 UNDIRECTED_BL_TR = 38
 UNDIRECTED_BR_TL = 39
@@ -45,6 +47,46 @@ def closest_vertex(p, vertex_list):
     return closest
 
 
+# def get_latex(model_output):
+#     labels = model_output["labels"]
+#     boxes = model_output["boxes"]
+#     out_lines = [r'\begin{tikzpicture}[thick,main/.style = {draw, circle}]']
+#     max_x = max([boxes[i][2] if int(labels[i]) == 36 else 0 for i in range(len(boxes))])
+#     max_y = max([boxes[i][3] if int(labels[i]) == 36 else 0 for i in range(len(boxes))])
+#     for i in range(len(boxes)):
+#         boxes[i][1] = max_y - boxes[i][1]
+#         boxes[i][3] = max_y - boxes[i][3]
+#
+#     # First draw nodes
+#     num_node = 1
+#     vertex_list = []
+#     for i in range(len(labels)):
+#         if labels[i] <= 35:
+#             out_lines.append(node_line % (num_node, boxes[i][0] / float(max_x) * X_RANGE, boxes[i][1] / float(max_y) * Y_RANGE, code_to_letter[labels[i]]))
+#             vertex_list.append([boxes[i][0], boxes[i][1]])
+#             num_node += 1
+#
+#     # Draw edges
+#     for i in range(len(labels)):
+#         BL = (boxes[i][0], boxes[i][3])
+#         BR = (boxes[i][2], boxes[i][3])
+#         TL = (boxes[i][0], boxes[i][1])
+#         TR = (boxes[i][2], boxes[i][1])
+#         if labels[i] == UNDIRECTED_BL_TR:
+#             out_lines.append(UNDIRECTED_LINE % (closest_vertex(BL, vertex_list), closest_vertex(TR, vertex_list)))
+#         elif labels[i] == UNDIRECTED_BR_TL:
+#             out_lines.append(UNDIRECTED_LINE % (closest_vertex(TL, vertex_list), closest_vertex(BR, vertex_list)))
+#         elif labels[i] == DIRECTED_BL_TR:
+#             out_lines.append(DIRECTED_LINE % (closest_vertex(BL, vertex_list), closest_vertex(TR, vertex_list)))
+#         elif labels[i] == DIRECTED_TR_BL:
+#             out_lines.append(DIRECTED_LINE % (closest_vertex(TR, vertex_list), closest_vertex(BL, vertex_list)))
+#         elif labels[i] == DIRECTED_BR_TL:
+#             out_lines.append(DIRECTED_LINE % (closest_vertex(BR, vertex_list), closest_vertex(TL, vertex_list)))
+#         elif labels[i] == DIRECTED_TL_BR:
+#             out_lines.append(DIRECTED_LINE % (closest_vertex(TL, vertex_list), closest_vertex(BR, vertex_list)))
+#     out_lines.append(r'\end{tikzpicture}')
+#     return "\n".join(out_lines)
+
 def get_latex(model_output):
     labels = model_output["labels"]
     boxes = model_output["boxes"]
@@ -59,8 +101,8 @@ def get_latex(model_output):
     num_node = 1
     vertex_list = []
     for i in range(len(labels)):
-        if labels[i] <= 35:
-            out_lines.append(node_line % (num_node, boxes[i][0] / float(max_x) * X_RANGE, boxes[i][1] / float(max_y) * Y_RANGE, code_to_letter[labels[i]]))
+        if labels[i] == 36:
+            out_lines.append(node_line % (num_node, boxes[i][0] / float(max_x) * X_RANGE, boxes[i][1] / float(max_y) * Y_RANGE, code_to_letter[random.randint(0, 35)]))
             vertex_list.append([boxes[i][0], boxes[i][1]])
             num_node += 1
 
@@ -84,6 +126,3 @@ def get_latex(model_output):
             out_lines.append(DIRECTED_LINE % (closest_vertex(TL, vertex_list), closest_vertex(BR, vertex_list)))
     out_lines.append(r'\end{tikzpicture}')
     return "\n".join(out_lines)
-
-
-print(get_latex(model_output))
